@@ -14,16 +14,15 @@ const sportArr = new Map([
   ["SUMO", "Hayateumi Hidehito"],
 ]);
 
-let inputYear = prompt('Enter your year of birth');
-let inputCity = prompt('Enter your city of residence');
-let inputSport = prompt('Enter your favorite sport');
+const inputYear = prompt('Enter your year of birth');
+const inputCity = prompt('Enter your city of residence');
+const inputSport = prompt('Enter your favorite sport');
 
 const invalidYear =
   inputYear === null ||
   !inputYear.trim() ||
   isNaN(inputYear) ||
-  parseInt(inputYear) !== +inputYear ||
-  Math.abs(inputYear).toString().length !== 4 ||
+  !Number.isInteger(+inputYear) ||
   +inputYear < 1900 ||
   +inputYear > 2024;
 
@@ -37,50 +36,44 @@ let sportMessage = '';
 
 if (inputYear === null) {
   yearMessage = "It's a pity that you didn't indicate your year of birth.";
-}
-
-if (inputCity === null) {
-  cityMessage = "It's a pity that you didn't indicate your city of residence.";
-}
-
-if (inputSport === null) {
-  sportMessage = "It's a pity that you didn't indicate your favorite sport.";
+} else {
+  yearMessage = 'The year of birth must be a positive integer and consist of 4 digits (from 1900 to 2024).';
 }
 
 if (!invalidYear) {
   yearMessage = `Your age is - ${CURRENT_YEAR - inputYear}.`;
+}
+
+if (inputCity === null) {
+  cityMessage = "It's a pity that you didn't indicate your city of residence.";
 } else {
-  if (inputYear !== null) {
-    yearMessage = 'The year of birth must be a positive integer and consist of 4 digits (from 1900 to 2024).';
-  }
+  cityMessage = 'The city name cannot be an empty string or a number.';    
 }
 
 if (!invalidCity) {
   cityMessage = 'You live in ';
 
-  if (cityArr.has(inputCity.toUpperCase())) {
-    cityMessage += `the capital of ${cityArr.get(inputCity.toUpperCase())}.`;
+  if (cityArr.has(inputCity.trim().toUpperCase())) {
+    cityMessage += `the capital of ${cityArr.get(inputCity.trim().toUpperCase())}.`;
   } else {
     cityMessage += `${inputCity}.`;
   }
+}
+
+if (inputSport === null) {
+  sportMessage = "It's a pity that you didn't indicate your favorite sport.";
 } else {
-  if (inputCity !== null) {
-    cityMessage = 'The city name cannot be an empty string or a number.';    
-  }
+  sportMessage = 'The name of the sport cannot be an empty string or a number.';    
 }
 
 if (!invalidSport) {
   sportMessage = "Your favorite sport is - ";
 
-  if (sportArr.has(inputSport.toUpperCase())) {
-    sportMessage = `${inputSport} - cool! Do you want to be like ${sportArr.get(inputSport.toUpperCase())}?`;
+  if (sportArr.has(inputSport.trim().toUpperCase())) {
+    sportMessage = `${inputSport} - cool! Do you want to be like ${sportArr.get(inputSport.trim().toUpperCase())}?`;
   } else {
     sportMessage += `${inputSport}.`;
   }
-} else {
-  if (inputSport !== null) {
-    sportMessage = 'The name of the sport cannot be an empty string or a number.';    
-  }
-}
+} 
 
 alert(`${yearMessage} \n${cityMessage} \n${sportMessage}`);
